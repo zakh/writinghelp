@@ -66,21 +66,18 @@ if scan:
     st.write('Text Statistics')
     st.write(readability_checker(text))
 elif grammar:
-    corrections = grammar_checker(text)
-    for index, correction in enumerate(corrections):
-        error_text, suggestions = correction[0], correction[1]
+    matches = grammar_checker(text)
+        for match in matches:
+            message = match['message']
+            error_text = match['context']['text'][match['offset']:match['offset'] + match['length']]
+            suggestions = [r['value'] for r in match['replacements']]
 
-        # Displaying original error and suggestions
-        st.markdown(f"**Error:** ~~{error_text}~~")
+            st.markdown(f"• **{message}** {error_text} {' '.join(suggestions)}")
 
-        for suggestion in suggestions:
-            # Create a unique key for each button using the index and suggestion
-            button_key = f"apply_{index}_{suggestion}"
-            if st.button(f"Apply '{suggestion}'", key=button_key):
-                # Replace the first occurrence of error_text with this suggestion
-                text = text.replace(error_text, suggestion, 1)
-                # Update the text area with the new text
-                st.text_area('Text Field', text, height=200)
+            for suggestion in suggestions:
+                if st.button(f"Apply '{suggestion}' to '{error_text}'"):
+                    text = text[:match['offset']] + suggestion + text[match['offset'] + match['length']:]
+                    st.text_area('Text Field', text, height=200)
 
 
 
