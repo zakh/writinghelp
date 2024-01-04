@@ -4,6 +4,8 @@ import openai
 from langchain.llms import OpenAI
 import textstat as ts
 import language_tool_python
+import requests
+
 openai_api_key = os.getenv("OPENAI_API_KEY")
 
 def readability_checker(w):
@@ -26,15 +28,28 @@ def readability_checker(w):
     return stats
 
 def grammar_checker(text):
-    tool = language_tool_python.LanguageTool('en-US', config={'maxSpellingSuggestions': 1})
-    check = tool.check(text)
+    api_url = "https://api.languagetool.org/v2/check"
+    payload = {
+        'text': text,
+        'language': 'en-US'
+    }
+    response = requests.post(api_url, data=payload)
     result = []
-    for i in check:
-        result.append(i)
-        result.append(f'Error in text => {text[i.offset : i.offset + i.errorLength]}')
-        result.append(f'Can be replaced with =>  {i.replacements}')
-        result.append('--------------------------------------')
-    return result 
+
+    if response.status_code == 200:
+        data = response.json()
+        for match in data.get('matches', []):
+            error_text = text[match['offset']: match['offset'] + match['length']]
+            suggestions = [suggestion['value'] for suggestion in match.get('replacements', [])]
+            
+            result.append(f'Error in text => {error_text}')
+            result.append(f'Can be replaced with => {suggestions}')
+            result.append('--------------------------------------')
+    else:
+        result.append("Error in connecting to LanguageTool API.")
+
+    return result
+
 
 
 
