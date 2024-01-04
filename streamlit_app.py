@@ -34,21 +34,8 @@ def grammar_checker(text):
         'language': 'en-US'
     }
     response = requests.post(api_url, data=payload)
-    result = []
 
-    if response.status_code == 200:
-        data = response.json()
-        for match in data.get('matches', []):
-            error_text = text[match['offset']: match['offset'] + match['length']]
-            suggestions = [suggestion['value'] for suggestion in match.get('replacements', [])]
-            
-            result.append(f'Error in text => {error_text}')
-            result.append(f'Can be replaced with => {suggestions}')
-            result.append('--------------------------------------')
-    else:
-        result.append("Error in connecting to LanguageTool API.")
-
-    return result
+    return response
 
 
 
@@ -72,7 +59,7 @@ elif grammar:
         error_text = match['context']['text'][match['offset']:match['offset'] + match['length']]
         suggestions = [r['value'] for r in match['replacements']]
 
-        st.markdown(f"• **{message}** {error_text} {' '.join(suggestions)}")
+        st.markdown(f"**{message}** {error_text} {' '.join(suggestions)}")
 
         for suggestion in suggestions:
             if st.button(f"Apply '{suggestion}' to '{error_text}'"):
