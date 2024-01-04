@@ -21,7 +21,7 @@ if scan:
     st.write('Text Statistics')
     st.write(readability_checker(text))
 elif grammar:
-    st.write(grammar_checker(box))
+    st.write(grammar_checker(text))
 
 
 def readability_checker(w):
@@ -52,4 +52,4 @@ def grammar_checker(text):
         result.append(f'Error in text => {text[i.offset : i.offset + i.errorLength]}')
         result.append(f'Can be replaced with =>  {i.replacements}')
         result.append('--------------------------------------')
-    return result
+    return result 
