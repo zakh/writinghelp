@@ -6,24 +6,6 @@ import textstat as ts
 import language_tool_python
 openai_api_key = os.getenv("OPENAI_API_KEY")
 
-
-
-st.title("Writing Help")
-
-
-placeholder = 'Your text goes here....'
-text = st.text_area('Text Field', placeholder, height=200)
-left, right = st.columns([5, 1])
-scan = left.button('Check Readability')
-grammar = right.button('Check Gramamar')
-
-if scan:
-    st.write('Text Statistics')
-    st.write(readability_checker(text))
-elif grammar:
-    st.write(grammar_checker(text))
-
-
 def readability_checker(w):
     stats = dict(
             flesch_reading_ease=ts.flesch_reading_ease(w),
@@ -53,3 +35,22 @@ def grammar_checker(text):
         result.append(f'Can be replaced with =>  {i.replacements}')
         result.append('--------------------------------------')
     return result 
+
+
+
+st.title("Writing Help")
+
+
+placeholder = 'Your text goes here....'
+text = st.text_area('Text Field', placeholder, height=200)
+left, right = st.columns([5, 1])
+scan = left.button('Check Readability')
+grammar = right.button('Check Gramamar')
+
+if scan:
+    st.write('Text Statistics')
+    st.write(readability_checker(text))
+elif grammar:
+    st.write(grammar_checker(text))
+
+
