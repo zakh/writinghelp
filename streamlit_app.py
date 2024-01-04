@@ -67,17 +67,17 @@ if scan:
     st.write(readability_checker(text))
 elif grammar:
     matches = grammar_checker(text)
-        for match in matches:
-            message = match['message']
-            error_text = match['context']['text'][match['offset']:match['offset'] + match['length']]
-            suggestions = [r['value'] for r in match['replacements']]
+    for match in matches:
+        message = match['message']
+        error_text = match['context']['text'][match['offset']:match['offset'] + match['length']]
+        suggestions = [r['value'] for r in match['replacements']]
 
-            st.markdown(f"• **{message}** {error_text} {' '.join(suggestions)}")
+        st.markdown(f"• **{message}** {error_text} {' '.join(suggestions)}")
 
-            for suggestion in suggestions:
-                if st.button(f"Apply '{suggestion}' to '{error_text}'"):
-                    text = text[:match['offset']] + suggestion + text[match['offset'] + match['length']:]
-                    st.text_area('Text Field', text, height=200)
+        for suggestion in suggestions:
+            if st.button(f"Apply '{suggestion}' to '{error_text}'"):
+                text = text[:match['offset']] + suggestion + text[match['offset'] + match['length']:]
+                st.text_area('Text Field', text, height=200)
 
 
 
