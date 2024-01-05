@@ -2,10 +2,7 @@ import streamlit as st
 import requests
 import textstat as ts
 import os
-import openai
-
-api_key = os.environ.get('OPENAI_API_KEY')
-openai.api_key = api_key
+from openai import OpenAI
 
 
 def grammar_checker(text):
@@ -43,19 +40,23 @@ def grammar_checker(text):
 
 
 def make_it_longer(text):
-    # Define the user prompt message
-    prompt = "Hello!"
-    # Create a chatbot using ChatCompletion.create() function
-    completion = openai.ChatCompletion.create(
-    # Use GPT 3.5 as the LLM
-    model="gpt-3.5-turbo",
-    # Pre-define conversation messages for the possible roles
-    messages=[
-        {"role": "system", "content": "You are a helpful assistant."},
-        {"role": "user", "content": prompt}
-    ]
+    client = OpenAI(
+        api_key=os.environ.get("OPENAI_API_KEY"),
     )
-    return(completion.choices[0].message)
+
+    chat_completion = client.chat.completions.create(
+        messages=[
+            {
+                "role": "user",
+                "content": "Say this is a test",
+            }
+        ],
+        model="gpt-3.5-turbo",
+    )
+    st.write(chat_completion)
+    return[]
+    
+
 
 st.title("Writing Help")
 
