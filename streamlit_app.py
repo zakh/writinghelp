@@ -61,7 +61,7 @@ st.title("Writing Help")
 
 
 if 'text' not in st.session_state:
-    st.session_state.text = 'Your text goes here....'
+    st.session_state.text = ''
 
 text_area = st.text_area('Text Field', st.session_state.text, key='text')
 grammar = st.button('Check Grammar')
