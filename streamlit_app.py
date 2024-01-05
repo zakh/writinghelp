@@ -52,7 +52,7 @@ def make_it_longer(text):
         ],
         model="gpt-3.5-turbo",
     )
-    return chat_completion.choices[0].message.content)
+    return chat_completion.choices[0].message.content
     
 
 
