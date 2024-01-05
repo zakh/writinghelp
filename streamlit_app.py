@@ -47,13 +47,12 @@ def make_it_longer(text):
         messages=[
             {
                 "role": "user",
-                "content": "Say this is a test",
+                "content": "Please rephrase the following text to make it longer while preserving its meaning and detail: \n\n'{text}'"
             }
         ],
         model="gpt-3.5-turbo",
     )
-    st.write(chat_completion.choices[0].message.content)
-    return[]
+    return chat_completion.choices[0].message.content)
     
 
 
