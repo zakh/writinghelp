@@ -18,10 +18,6 @@ def grammar_checker(text):
         st.error("Failed to connect to the LanguageTool API.")
         return []
 
-# Function to update the textarea with the applied suggestion
-def update_text_area(match, suggestion):
-    st.session_state.text = apply_correction(st.session_state.text, match, suggestion)
-    st.rerun()
 
 
 
