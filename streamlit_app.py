@@ -24,6 +24,9 @@ def grammar_checker(text):
 def apply_correction(text, match, suggestion):
     return text[:match['offset']] + suggestion + text[match['offset'] + match['length']:]
 
+def update_text_area():
+    st.session_state.text = apply_correction(st.session_state.text, st.session_state.current_match, st.session_state.current_suggestion)
+    st.rerun()
 
 
 if 'text' not in st.session_state:
@@ -36,9 +39,9 @@ grammar = right.button('Check Grammar')
 
 if scan:
     st.write('Text Statistics')
-    st.write(readability_checker(text_area))
+    st.write(readability_checker(st.session_state.text))
 elif grammar:
-    matches = grammar_checker(text_area)
+    matches = grammar_checker(st.session_state.text)
     for match in matches:
         message = match.get('message')
         error_text = match['context']['text'][match['offset']:match['offset'] + match['length']]
@@ -49,5 +52,8 @@ elif grammar:
         suggestion_buttons = st.columns(len(suggestions))
         for i, suggestion in enumerate(suggestions):
             if suggestion_buttons[i].button(suggestion):
-                st.session_state.text = apply_correction(text_area, match, suggestion)
-                st.rerun()
+                st.session_state.current_match = match
+                st.session_state.current_suggestion = suggestion
+                update_text_area()
+
+text_area = st.text_area('Text Field', st.session_state.text, height=200)
