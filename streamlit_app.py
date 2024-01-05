@@ -6,9 +6,9 @@ import textstat as ts
 def grammar_checker(text):
     api_url = "https://api.languagetool.org/v2/check"
     payload = {
-        'text': thetext,
+        'text': text,
         'language': 'en-US',
-        'level=picky'
+        'level'='picky'
     }
     response = requests.post(api_url, data=payload)
     if response.status_code == 200:
