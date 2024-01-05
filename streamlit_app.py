@@ -5,6 +5,7 @@ import os
 import openai
 
 api_key = os.environ.get('OPENAI_API_KEY')
+openai.api_key = api_key
 
 
 def grammar_checker(text):
@@ -41,8 +42,16 @@ def grammar_checker(text):
         return []
 
 
+def make_it_longer(text):
+    openai.api_key = 'your-api-key'
+    response = openai.Completion.create(
+        engine="text-davinci-003",
+        prompt=text,
+        max_tokens=150 
+    )
 
-
+    extended_text = response.choices[0].text.strip()
+    st.write(extended_text)
 
 st.title("Writing Help")
 
@@ -52,9 +61,11 @@ if 'text' not in st.session_state:
 
 text_area = st.text_area('Text Field', st.session_state.text, key='text')
 grammar = st.button('Check Grammar')
-st.write(api_key)
+longer = st.button('Make it longer')
 
 if grammar:
     matches = grammar_checker(st.session_state.text)
+elif longer:
+    make_it_longer(st.session_state.text)
     
 
