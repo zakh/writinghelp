@@ -34,8 +34,7 @@ grammar = st.button('Check Grammar')
 
 if grammar:
     st.write(st.session_state.text)
-    update = 'new text'
-    st.session_state.text = update
+    st.session_state.text = text_area
     st.write(st.session_state.text)
 
     
