@@ -20,28 +20,34 @@ def grammar_checker(text):
     else:
         st.error("Failed to connect to the LanguageTool API.")
         return []
+    
+def apply_correction(text, match, suggestion):
+    return text[:match['offset']] + suggestion + text[match['offset'] + match['length']:]
 
-st.title("Writing Help")
 
-placeholder = 'Your text goes here....'
-text = st.text_area('Text Field', placeholder, height=200)
+
+if 'text' not in st.session_state:
+    st.session_state.text = 'Your text goes here....'
+
+text_area = st.text_area('Text Field', st.session_state.text, height=200)
 left, right = st.columns([5, 1])
 scan = left.button('Check Readability')
 grammar = right.button('Check Grammar')
 
 if scan:
     st.write('Text Statistics')
-    st.write(readability_checker(text))
+    st.write(readability_checker(text_area))
 elif grammar:
-    matches = grammar_checker(text)
+    matches = grammar_checker(text_area)
     for match in matches:
         message = match.get('message')
         error_text = match['context']['text'][match['offset']:match['offset'] + match['length']]
-        suggestions = [r['value'] for r in match.get('replacements', [])]
+        suggestions = [r['value'] for r in match.get('replacements', [])][:3]  # Limit to top 3 suggestions
 
-        st.markdown(f"• **{message}** `{error_text}` {' '.join(suggestions)}")
+        st.markdown(f"• **{message}** `{error_text}`")
 
-        for suggestion in suggestions:
-            if st.button(f"Apply '{suggestion}' to '{error_text}'"):
-                text = text[:match['offset']] + suggestion + text[match['offset'] + match['length']:]
-                st.text_area('Text Field', text, height=200)
+        suggestion_buttons = st.columns(len(suggestions))
+        for i, suggestion in enumerate(suggestions):
+            if suggestion_buttons[i].button(suggestion):
+                st.session_state.text = apply_correction(text_area, match, suggestion)
+                st.experimental_rerun()
