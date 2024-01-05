@@ -1,6 +1,12 @@
 import streamlit as st
 import requests
 import textstat as ts
+import os
+import openai
+
+api_key = os.environ.get('OPENAI_API_KEY')
+st.write(api_key)
+
 
 # Function to call LanguageTool API for grammar checking
 def grammar_checker(text):
@@ -35,6 +41,8 @@ def grammar_checker(text):
     else:
         st.error("Failed to connect to the LanguageTool API.")
         return []
+
+def make_it_longer(text):
 
 
 
