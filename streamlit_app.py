@@ -7,7 +7,6 @@ import openai
 api_key = os.environ.get('OPENAI_API_KEY')
 
 
-# Function to call LanguageTool API for grammar checking
 def grammar_checker(text):
     api_url = "https://api.languagetool.org/v2/check"
     payload = {
@@ -40,9 +39,6 @@ def grammar_checker(text):
     else:
         st.error("Failed to connect to the LanguageTool API.")
         return []
-
-def make_it_longer(text):
-
 
 
 
