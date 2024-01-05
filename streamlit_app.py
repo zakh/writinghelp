@@ -15,7 +15,7 @@ def grammar_checker(text):
     if response.status_code == 200:
         matches = response.json().get('matches', [])
         if not matches:
-            st.write("No grammar suggestions found.")
+            return "No grammar suggestions found."
         for match in matches:
             message = match.get('message')
             error_text = match['context']['text'][match['offset']:match['offset'] + match['length']]
