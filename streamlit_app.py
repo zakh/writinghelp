@@ -23,7 +23,7 @@ def apply_correction(text, match, suggestion):
 # Function to update the textarea with the applied suggestion
 def update_text_area(match, suggestion):
     st.session_state.text = apply_correction(st.session_state.text, match, suggestion)
-    st.experimental_rerun()
+    st.rerun()
 
 # Readability checker function
 def readability_checker(w):
