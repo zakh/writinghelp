@@ -11,9 +11,15 @@ def grammar_checker(text):
     }
     response = requests.post(api_url, data=payload)
     if response.status_code == 200:
-        st.write("API Response:", response.json())  # Debug print
-
-        return response.json().get('matches', [])
+        matches = response.json().get('matches', [])
+    if not matches:
+        st.write("No grammar suggestions found.")
+    for match in matches:
+        message = match.get('message')
+        error_text = match['context']['text'][match['offset']:match['offset'] + match['length']]
+        suggestions = [r['value'] for r in match.get('replacements', [])][:3] 
+        st.markdown(f"• **{message}** `{error_text}`")
+    return []
     else:
         st.error("Failed to connect to the LanguageTool API.")
         return []
@@ -34,13 +40,5 @@ grammar = st.button('Check Grammar')
 
 if grammar:
     matches = grammar_checker(st.session_state.text)
-    if not matches:
-        st.write("No grammar suggestions found.")
-
-    for match in matches:
-        message = match.get('message')
-        error_text = match['context']['text'][match['offset']:match['offset'] + match['length']]
-        suggestions = [r['value'] for r in match.get('replacements', [])][:3]  # Limit to top 3 suggestions
     
-        st.markdown(f"• **{message}** `{error_text}`")
 
