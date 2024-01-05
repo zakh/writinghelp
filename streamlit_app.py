@@ -31,10 +31,8 @@ def grammar_checker(text):
                 for suggestion in suggestions:
                     formatted_message += f" `{suggestion}`"
                 formatted_message += ")"
-        return formatted_message
-    else:
-        st.error("Failed to connect to the LanguageTool API.")
-        return []
+    return formatted_message
+    
 
 
 def make_it_longer(text):
