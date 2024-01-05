@@ -11,6 +11,8 @@ def grammar_checker(text):
     }
     response = requests.post(api_url, data=payload)
     if response.status_code == 200:
+        st.write("API Response:", response.json())  # Debug print
+
         return response.json().get('matches', [])
     else:
         st.error("Failed to connect to the LanguageTool API.")
