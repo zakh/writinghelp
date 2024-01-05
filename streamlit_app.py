@@ -12,14 +12,14 @@ def grammar_checker(text):
     response = requests.post(api_url, data=payload)
     if response.status_code == 200:
         matches = response.json().get('matches', [])
-    if not matches:
-        st.write("No grammar suggestions found.")
-    for match in matches:
-        message = match.get('message')
-        error_text = match['context']['text'][match['offset']:match['offset'] + match['length']]
-        suggestions = [r['value'] for r in match.get('replacements', [])][:3] 
-        st.markdown(f"• **{message}** `{error_text}`")
-    return []
+        if not matches:
+            st.write("No grammar suggestions found.")
+        for match in matches:
+            message = match.get('message')
+            error_text = match['context']['text'][match['offset']:match['offset'] + match['length']]
+            suggestions = [r['value'] for r in match.get('replacements', [])][:3] 
+            st.markdown(f"• **{message}** `{error_text}`")
+        return []
     else:
         st.error("Failed to connect to the LanguageTool API.")
         return []
