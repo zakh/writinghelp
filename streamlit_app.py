@@ -44,29 +44,22 @@ def readability_checker(w):
         reading_time=ts.reading_time(w)
     )
 
-# Streamlit app layout
+
 st.title("Writing Help")
 
-# Initialize session state for text
 if 'text' not in st.session_state:
     st.session_state.text = 'Your text goes here....'
 
-# Create columns for buttons
 left, right = st.columns([5, 1])
 scan = left.button('Check Readability')
 grammar = right.button('Check Grammar')
 
-# Handling readability check
 if scan:
     st.write('Text Statistics')
     st.write(readability_checker(st.session_state.text))
-
-# Handling grammar check
 elif grammar:
     matches = grammar_checker(st.session_state.text)
-    if matches:
-        st.write("Found grammar suggestions:")
-    else:
+    if not matches:
         st.write("No grammar suggestions found.")
 
     for match in matches:
@@ -76,11 +69,10 @@ elif grammar:
 
         st.markdown(f"• **{message}** `{error_text}`")
 
-        # Create a row of buttons for suggestions
         suggestion_buttons = st.columns(len(suggestions))
         for i, suggestion in enumerate(suggestions):
             if suggestion_buttons[i].button(suggestion):
-                update_text_area(match, suggestion)
+                st.session_state.text = apply_correction(st.session_state.text, match, suggestion)
+                st.experimental_rerun()
 
-# Text area for input
 text_area = st.text_area('Text Field', st.session_state.text, height=200)
