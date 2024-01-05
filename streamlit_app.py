@@ -30,7 +30,7 @@ if 'text' not in st.session_state:
     st.session_state.text = 'Your text goes here....'
 
 text_area = st.text_area('Text Field', st.session_state.text, key='text')
-grammar = button('Check Grammar')
+grammar = st.button('Check Grammar')
 
 if grammar:
     st.write(st.session_state.text)
