@@ -8,7 +8,7 @@ def grammar_checker(text):
     payload = {
         'text': text,
         'language': 'en-US',
-        'level'='picky'
+        'level': 'picky'
     }
     response = requests.post(api_url, data=payload)
     if response.status_code == 200:
