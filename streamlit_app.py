@@ -14,27 +14,23 @@ def grammar_checker(text):
         matches = response.json().get('matches', [])
         if not matches:
             st.write("No grammar suggestions found.")
-        for match in matches:
-            st.write("in matches")
+       for match in matches:
             message = match.get('message')
             error_text = match['context']['text'][match['offset']:match['offset'] + match['length']]
             suggestions = []
 
             if message == "Possible spelling mistake found.":
-                st.write("in spelling")
                 suggestions = [r['value'] for r in match.get('replacements', [])][:3]
 
-            formatted_message = f"<font color='red'><s>{error_text}</s></font>"
-            
+            formatted_message = f"**{message}** `{error_text}`"
+
             if suggestions:
-                st.write("in suggestions")
                 formatted_message += " (Suggestions:"
                 for suggestion in suggestions:
-                    st.write("in for")
-                    formatted_message += f" <font color='green'>{suggestion}</font>"
+                    formatted_message += f" `{suggestion}`"
                 formatted_message += ")"
 
-            st.write(f"• **{message}** {formatted_message}\n")
+            st.markdown(f"• {formatted_message}")
         return []
     else:
         st.error("Failed to connect to the LanguageTool API.")
