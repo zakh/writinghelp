@@ -5,7 +5,6 @@ import os
 import openai
 
 api_key = os.environ.get('OPENAI_API_KEY')
-st.write(api_key)
 
 
 # Function to call LanguageTool API for grammar checking
@@ -57,6 +56,7 @@ if 'text' not in st.session_state:
 
 text_area = st.text_area('Text Field', st.session_state.text, key='text')
 grammar = st.button('Check Grammar')
+st.write(api_key)
 
 if grammar:
     matches = grammar_checker(st.session_state.text)
