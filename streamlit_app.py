@@ -42,7 +42,7 @@ def make_it_longer(text):
     client = OpenAI(
         api_key=os.environ.get("OPENAI_API_KEY"),
     )
-    prompt = "Please rephrase the following text to make it longer while preserving its meaning and detail. Add no more than twice as many words.: \n\n"
+    prompt = "Please rephrase the following text to make it longer while preserving its meaning and detail in a single sentence: \n\n"
     prompt += text
     chat_completion = client.chat.completions.create(
         messages=[
