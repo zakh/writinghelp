@@ -14,17 +14,24 @@ def grammar_checker(text):
         matches = response.json().get('matches', [])
         if not matches:
             st.write("No grammar suggestions found.")
-        for match in matches:
+        for match in api_response["matches"]:
             message = match.get('message')
             error_text = match['context']['text'][match['offset']:match['offset'] + match['length']]
-            suggestions = [r['value'] for r in match.get('replacements', [])][:3]
-            
-            # Create the formatted string using HTML/CSS
-            formatted_message = f"<font color='red'><s>{error_text}</s></font>"
-            for suggestion in suggestions:
-                formatted_message += f" <font color='green'>{suggestion}</font>"
+            error_type = match.get('type', {}).get('typeName')
+            suggestions = []
 
-            st.markdown(f"• **{message}** {formatted_message}", unsafe_allow_html=True)
+            if message == "Possible spelling mistake found.":
+                suggestions = [r['value'] for r in match.get('replacements', [])][:3]
+
+            formatted_message = f"<font color='red'><s>{error_text}</s></font>"
+            
+            if suggestions:
+                formatted_message += " (Suggestions:"
+                for suggestion in suggestions:
+                    formatted_message += f" <font color='green'>{suggestion}</font>"
+                formatted_message += ")"
+
+            print(f"• **{message}** {formatted_message}\n")
         return []
     else:
         st.error("Failed to connect to the LanguageTool API.")
