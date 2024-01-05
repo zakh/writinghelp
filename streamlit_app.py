@@ -42,12 +42,12 @@ def make_it_longer(text):
     client = OpenAI(
         api_key=os.environ.get("OPENAI_API_KEY"),
     )
-    st.write("Please rephrase the following text to make it longer while preserving its meaning and detail: \n\n'{text}'")
+    prompt = "Please rephrase the following text to make it longer while preserving its meaning and detail: \n\n" += text
     chat_completion = client.chat.completions.create(
         messages=[
             {
                 "role": "user",
-                "content": "Please rephrase the following text to make it longer while preserving its meaning and detail: \n\n'{text}'"
+                "content": prompt
             }
         ],
         model="gpt-3.5-turbo",
