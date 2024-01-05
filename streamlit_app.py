@@ -15,8 +15,7 @@ def grammar_checker(text):
     if response.status_code == 200:
         matches = response.json().get('matches', [])
         if not matches:
-            message = "No grammar errors found."
-            formatted_message = f"**{message}**"
+            formatted_message = f"**No grammer errors found.**"
         for match in matches:
             message = match.get('message')
             error_text = match['context']['text'][match['offset']:match['offset'] + match['length']]
@@ -32,8 +31,6 @@ def grammar_checker(text):
                 for suggestion in suggestions:
                     formatted_message += f" `{suggestion}`"
                 formatted_message += ")"
-
-            #st.markdown(f"• {formatted_message}")
         return formatted_message
     else:
         st.error("Failed to connect to the LanguageTool API.")
