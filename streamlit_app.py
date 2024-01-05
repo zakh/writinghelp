@@ -4,7 +4,7 @@ import textstat as ts
 
 # Function to call LanguageTool API for grammar checking
 def grammar_checker(text):
-    st.write(text)
+    st.write("the text", text)
     api_url = "https://api.languagetool.org/v2/check"
     payload = {
         'text': text,
