@@ -33,25 +33,14 @@ text_area = st.text_area('Text Field', st.session_state.text, key='text')
 grammar = st.button('Check Grammar')
 
 if grammar:
-    st.write(st.session_state.text)
-    st.session_state.text = text_area
-    st.write(st.session_state.text)
+    matches = grammar_checker(st.session_state.text)
+    if not matches:
+        st.write("No grammar suggestions found.")
 
+    for match in matches:
+        message = match.get('message')
+        error_text = match['context']['text'][match['offset']:match['offset'] + match['length']]
+        suggestions = [r['value'] for r in match.get('replacements', [])][:3]  # Limit to top 3 suggestions
     
-    #matches = grammar_checker(st.session_state.text)
-    #if not matches:
-    #    st.write("No grammar suggestions found.")
-
-    #for match in matches:
-    #    message = match.get('message')
-    #    error_text = match['context']['text'][match['offset']:match['offset'] + match['length']]
-    #    suggestions = [r['value'] for r in match.get('replacements', [])][:3]  # Limit to top 3 suggestions
-    #
-    #    st.markdown(f"• **{message}** `{error_text}`")
-    #
-    #    suggestion_buttons = st.columns(len(suggestions))
-    #    for i, suggestion in enumerate(suggestions):
-    #        if suggestion_buttons[i].button(suggestion):
-    #            st.session_state.text = apply_correction(st.session_state.text, match, suggestion)
-    #            st.experimental_rerun()
+        st.markdown(f"• **{message}** `{error_text}`")
 
