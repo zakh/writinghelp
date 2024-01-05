@@ -34,7 +34,7 @@ def grammar_checker(text):
                     formatted_message += f" <font color='green'>{suggestion}</font>"
                 formatted_message += ")"
 
-            print(f"• **{message}** {formatted_message}\n")
+            st.write(f"• **{message}** {formatted_message}\n")
         return []
     else:
         st.error("Failed to connect to the LanguageTool API.")
