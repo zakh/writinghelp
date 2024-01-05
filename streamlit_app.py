@@ -14,6 +14,7 @@ def grammar_checker(text):
     response = requests.post(api_url, data=payload)
     if response.status_code == 200:
         matches = response.json().get('matches', [])
+        all_messages = ""
         if not matches:
             return f"**No grammer errors found.**"
         for match in matches:
@@ -31,7 +32,9 @@ def grammar_checker(text):
                 for suggestion in suggestions:
                     formatted_message += f" `{suggestion}`"
                 formatted_message += ")"
-    return formatted_message
+            all_messages += formatted_message + "\n\n"
+            
+    return all_messages
     
 
 
