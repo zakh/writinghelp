@@ -3,7 +3,7 @@ import requests
 import textstat as ts
 
 # Function to call LanguageTool API for grammar checking
-def grammar_checker(thetext):
+def grammar_checker(text):
     api_url = "https://api.languagetool.org/v2/check"
     payload = {
         'text': thetext,
@@ -51,7 +51,9 @@ def readability_checker(w):
 st.title("Writing Help")
 
 if 'text' not in st.session_state:
-    st.session_state.text = 'Your text goes here....'
+    st.session_state['text'] = 'Your text goes here....'
+
+text_area = st.text_area('Text Field', st.session_state.text, height=200, on_change=lambda: st.session_state.update({'text': text_area}))
 
 left, right = st.columns([5, 1])
 scan = left.button('Check Readability')
@@ -78,4 +80,3 @@ elif grammar:
                 st.session_state.text = apply_correction(st.session_state.text, match, suggestion)
                 st.experimental_rerun()
 
-text_area = st.text_area('Text Field', st.session_state.text, height=200)
