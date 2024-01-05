@@ -64,6 +64,11 @@ if scan:
 # Handling grammar check
 elif grammar:
     matches = grammar_checker(st.session_state.text)
+    if matches:
+        st.write("Found grammar suggestions:")
+    else:
+        st.write("No grammar suggestions found.")
+
     for match in matches:
         message = match.get('message')
         error_text = match['context']['text'][match['offset']:match['offset'] + match['length']]
