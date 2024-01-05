@@ -56,6 +56,26 @@ def make_it_longer(text):
     return chat_completion.choices[0].message.content
     
 
+def make_it_rhyme(text):
+    client = OpenAI(
+        api_key=os.environ.get("OPENAI_API_KEY"),
+    )
+    prompt = "Please rephrase the following text so that it rhymes: \n\n"
+    prompt += text
+    chat_completion = client.chat.completions.create(
+        messages=[
+            {
+                "role": "user",
+                "content": prompt
+            }
+        ],
+        model="gpt-3.5-turbo",
+    )
+    return chat_completion.choices[0].message.content
+    
+
+
+
 
 st.title("Writing Help")
 
@@ -66,10 +86,13 @@ if 'text' not in st.session_state:
 text_area = st.text_area('Text Field', st.session_state.text, key='text')
 grammar = st.button('Check Grammar')
 longer = st.button('Make it longer')
+rhyme = st.button('Make it rhyme')
 
 if grammar:
     st.markdown(grammar_checker(st.session_state.text))
 elif longer:
     st.write(make_it_longer(st.session_state.text))
+elif rhyme:
+    st.write(make_it_rhyme(st.session_state.text))
     
 
