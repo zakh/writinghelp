@@ -50,4 +50,4 @@ elif grammar:
         for i, suggestion in enumerate(suggestions):
             if suggestion_buttons[i].button(suggestion):
                 st.session_state.text = apply_correction(text_area, match, suggestion)
-                st.experimental_rerun()
+                st.rerun()
