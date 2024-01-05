@@ -34,7 +34,7 @@ grammar = st.button('Check Grammar')
 
 if grammar:
     st.write(st.session_state.text)
-    st.session_state.text = 'back to normal'
+    #st.session_state.text = 'back to normal'
     st.write(st.session_state.text)
 
     
