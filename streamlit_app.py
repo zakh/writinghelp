@@ -47,13 +47,20 @@ def readability_checker(w):
         reading_time=ts.reading_time(w)
     )
 
+def on_text_change():
+    st.session_state.text = st.session_state['temp_text']
+
 
 st.title("Writing Help")
 
-if 'text' not in st.session_state:
-    st.session_state['text'] = 'Your text goes here....'
 
-text_area = st.text_area('Text Field', st.session_state.text, height=200, on_change=lambda: st.session_state.update({'text': text_area}))
+if 'text' not in st.session_state:
+    st.session_state.text = 'Your text goes here....'
+
+st.session_state.temp_text = st.session_state.text
+
+
+text_area = st.text_area('Text Field', st.session_state.temp_text, height=200, key='temp_text', on_change=on_text_change)
 
 left, right = st.columns([5, 1])
 scan = left.button('Check Readability')
