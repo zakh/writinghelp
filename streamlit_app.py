@@ -4,10 +4,12 @@ import textstat as ts
 
 # Function to call LanguageTool API for grammar checking
 def grammar_checker(text):
+    st.write(text)
     api_url = "https://api.languagetool.org/v2/check"
     payload = {
         'text': text,
-        'language': 'en-US'
+        'language': 'en-US',
+        'level=picky'
     }
     response = requests.post(api_url, data=payload)
     if response.status_code == 200:
