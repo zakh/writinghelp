@@ -35,23 +35,27 @@ def grammar_checker(text):
                     formatted_message += f" `{suggestion}`"
                 formatted_message += ")"
 
-            st.markdown(f"• {formatted_message}")
-        return []
+            #st.markdown(f"• {formatted_message}")
+        return formatted_message
     else:
         st.error("Failed to connect to the LanguageTool API.")
         return []
 
 
 def make_it_longer(text):
-    openai.api_key = 'your-api-key'
-    response = openai.Completion.create(
-        engine="text-davinci-003",
-        prompt=text,
-        max_tokens=150 
+    # Define the user prompt message
+    prompt = "Hello!"
+    # Create a chatbot using ChatCompletion.create() function
+    completion = openai.ChatCompletion.create(
+    # Use GPT 3.5 as the LLM
+    model="gpt-3.5-turbo",
+    # Pre-define conversation messages for the possible roles
+    messages=[
+        {"role": "system", "content": "You are a helpful assistant."},
+        {"role": "user", "content": prompt}
+    ]
     )
-
-    extended_text = response.choices[0].text.strip()
-    st.write(extended_text)
+    return(completion.choices[0].message)
 
 st.title("Writing Help")
 
@@ -64,8 +68,8 @@ grammar = st.button('Check Grammar')
 longer = st.button('Make it longer')
 
 if grammar:
-    matches = grammar_checker(st.session_state.text)
+    st.markdown(grammar_checker(st.session_state.text))
 elif longer:
-    make_it_longer(st.session_state.text)
+    st.write(make_it_longer(st.session_state.text))
     
 
